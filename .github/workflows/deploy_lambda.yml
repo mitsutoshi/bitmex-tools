@@ -15,4 +15,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt -t vendor
       - name: Create zip
-        run: zip -r bitmex-tools.zip *.py $VENDOR_DIR
+        run: zip -r bitmex-tools.zip *.py vendor
+      - name: Deploy to Lambda
+        run: sls deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Notify result to slack
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          job_name: '*Deploy Lambda*'
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
