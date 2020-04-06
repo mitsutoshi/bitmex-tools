@@ -12,6 +12,8 @@ jobs:
         run: echo "Hello world"
       - uses: actions/checkout@master
       - name: Install Dependencies
-        run: pip install -r requirements.txt -t vendor
+        run: |
+          mkdir vendor
+          pip install -r requirements.txt -t vendor
       - name: Create zip
         run: zip -r bitmex-tools.zip *.py $VENDOR_DIR

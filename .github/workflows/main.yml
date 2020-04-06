@@ -1,2 +1,10 @@
-- name: Python Style Checker
-  uses: andymcky/pycodestyle-action@0.1.3a
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  first_job:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Init
+        run: echo "Hello world"
